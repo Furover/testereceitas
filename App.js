@@ -1,20 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import{ View, StyleSheet, Text} from 'react-native'
 
-export default function App() {
-  return (
+export default function App(){
+  return(
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Text style={styles.title}>Gaminggg</Text>
+      <Nome nome="gamer"/>
+      <Nome nome="gamer2"/>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  container:{
+    backgroundColor: "red",
+    height: 400
   },
-});
+  title:{
+    fontSize: 24,
+    marginTop: 100
+    
+  }
+
+
+})
+
+function Nome({nome}){
+  return(
+    <Text>Olá {nome}</Text>
+  )
+}
