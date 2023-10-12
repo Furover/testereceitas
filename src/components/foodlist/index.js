@@ -7,8 +7,9 @@ export function FoodList({ data }){
                 source={{ uri:data.cover }}
                 style={styles.cover}
             />
-            <View>
-                <Text>{data.name}</Text>
+            <View style={styles.info}>
+                <Text style={styles.name}>{data.name}</Text>
+                <Text style={styles.desc}>{data.total_ingredients} | {data.time} min</Text>
             </View>
         </TouchableOpacity>
     )
