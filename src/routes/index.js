@@ -28,14 +28,25 @@ export function Routes(){
                 options={{
                     tabBarIcon: ({color, size, focused}) => {
                         if(focused){
-                            <Ionicons name="home" color="#000" size={size} />
+                            return <Ionicons name="home" color="#000" size={size} />
                         }
+
+                        return <Ionicons name="home-outline" color={color} size={size} />
                     }
                 }}
             />
             <Tab.Screen 
                 name="FavoritesTab" 
                 component={Favorites}
+                options={{
+                    tabBarIcon: ({color, size, focused}) => {
+                        if(focused){
+                            return <Ionicons name="heart" color="#FF4141" size={size} />
+                        }
+
+                        return <Ionicons name="heart-outline" color={color} size={size} />
+                    }
+                }}
             />
 
         </Tab.Navigator>
