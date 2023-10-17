@@ -50,6 +50,7 @@ export function Home(){
                 data={foods}
                 keyExtractor={ (item) => String(item.id) }
                 renderItem={ ({item}) => <FoodList data={item} /> }
+                showsVerticalScrollIndicator={false}
             />
 
         </SafeAreaView>
