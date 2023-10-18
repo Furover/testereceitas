@@ -1,33 +1,72 @@
 import { useLayoutEffect, useState } from 'react'
-import { View, Text, StyleSheet, Pressable, ScrollView, Image, Modal } from 'react-native'
+import { View, Text, StyleSheet, Pressable, ScrollView, Image, Modal, Share } from 'react-native'
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { Entypo, AntDesign, Feather } from '@expo/vector-icons'
 import { IngredientList } from '../../components/ingredientlist'
 import { InstructionList } from '../../components/instructionlist'
 import { VideoView } from '../../components/video'
+import { isFavorite, makeFavorite, removeFavorite } from '../../utils/storage'
 
 export function Detail(){
     const route = useRoute();
     const navigation = useNavigation();
     const [showVideo, setShowVideo] = useState(false);
+    const [favorite, setFavorite] = useState(false)
 
     useLayoutEffect(() => {
+
+        async function getStatusFavorite(){
+            const recipeFavorite = await isFavorite(route.params?.data)
+            setFavorite(recipeFavorite)
+        }
+
+        getStatusFavorite()
+
         navigation.setOptions({
             title: route.params?.data ? route.params?.data.name : "Detalhes da receita",
             headerRight: ()=> (
-                <Pressable onPress={() => {console.log("testando")}}>
-                    <Entypo 
-                    name="heart" 
-                    size={28}
-                    color="#FF4141"
+                <Pressable onPress={() => handleFavoriteRecipe(route.params?.data)}>
+                    {favorite ? (
+                        <Entypo 
+                        name="heart" 
+                        size={28}
+                        color="#FF4141"
+                        />
+                    ) : (
+                        <Entypo 
+                        name="heart-outlined"
+                        size={28}
+                        color="#FF4141"
                     />
+                    )}
                 </Pressable>
             )
         })
-    }, [navigation, route.params?.data])
+    }, [navigation, route.params?.data, favorite])
 
     function handleOpenVideo(){
-        console.log("cloco")
+        setShowVideo(true);
+    }
+
+    async function handleFavoriteRecipe(recipe){
+        if(favorite){
+            await removeFavorite(recipe.id)
+            setFavorite(false);
+        } else{
+            makeFavorite("@appreceitas", recipe)
+            setFavorite(true);
+        }
+    }
+
+    async function shareRecipe(){
+        try{
+            await Share.share({
+               url: "https://expo.dev",
+               message: `Receita: ${route.params?.data.name}\nIngredientes: ${route.params?.data.total_ingredients}\nVi lá no app Receita Fácil!`
+            })
+        }catch(error){
+            console.log(error)
+        }
     }
 
     return(
@@ -47,7 +86,7 @@ export function Detail(){
                     <Text style={styles.title}>{route.params?.data.name}</Text>
                     <Text style={styles.ingredients} >{route.params?.data.total_ingredients} Ingredientes</Text>
                 </View>
-            <Pressable>
+            <Pressable onPress={shareRecipe} >
                 <Feather name="share-2" size={24} color={"#121212"} />
             </Pressable>
             </View>

@@ -5,7 +5,7 @@ export function InstructionList({data, index}){
     return(
         <View style={styles.container}>
             <Text style={styles.count}>{index + 1}</Text>
-            <Text style={styles.name}>{data.text}</Text>
+            <Text style={styles.name}>-{data.text}</Text>
         </View>
     )
 }
